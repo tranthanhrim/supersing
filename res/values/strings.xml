@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">SSSSSSS</string>
+    <string name="title1">Record</string>
+    <string name="title2">Sing</string>
+    <string name="title3">Change Voice</string>
+    <string name="title4">My Recording</string>
+    <string name="title5">Setting</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="action_example">Example action</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_record_fragment">RecordFragment</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_my_recording_fragment">MyRecordingFragment</string>
+    <string name="title_activity_sing_fragment">SingFragment</string>
+    <string name="title_activity_change_voice">ChangeVoice</string>
+
+    <string-array name="nav_drawer_items">
+        <item>Record</item>
+        <item>Sing</item>
+        <item>Change voice</item>
+        <item>My Recording</item>
+        <item>Setting</item>
+    </string-array>
+
+    <array name="nav_drawer_icons">
+        <item>@drawable/ic_launcher</item>
+        <item>@drawable/ic_launcher</item>
+        <item>@drawable/ic_launcher</item>
+        <item>@drawable/ic_launcher</item>
+        <item>@drawable/ic_launcher</item>
+    </array>
+
+    <string name="title_activity_change_voice_fragment">ChangeVoiceFragment</string>
+    <string name="title_activity_setting_fragment">SettingFragment</string>
+    <string name="title_activity_notification">Notification</string>
+
+</resources>

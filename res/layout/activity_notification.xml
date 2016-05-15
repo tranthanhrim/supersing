@@ -1,0 +1,46 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    tools:context="com.example.sssssss.Notification" >
+
+    <ImageView 
+        android:id="@+id/imgIcon"
+        android:layout_height="30dp"
+        android:layout_width="30dp"
+        android:background="@drawable/ic_launcher"
+        android:layout_alignParentTop="true"/>
+    <TextView
+        android:id="@+id/txtState"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+		android:layout_below="@+id/imgIcon"
+        android:text="State" />
+    
+    <Button
+	      android:id="@+id/btnCancelNot"
+	      android:layout_width="25dp"
+	      android:layout_height="25dp"
+	      android:background="@drawable/delete"
+	      android:layout_centerVertical="true"
+	      android:layout_margin="5dp"
+	      android:layout_alignParentRight="true"/>
+    
+    <Button
+          android:id="@+id/btnDoneNot"
+          android:layout_width="25dp"
+          android:layout_height="25dp"
+          android:background="@drawable/stop"
+          android:layout_centerVertical="true"
+          android:layout_margin="5dp"
+          android:layout_toLeftOf="@+id/btnCancelNot"/>
+    
+    <Button
+          android:id="@+id/btnRecordNot"
+	      android:layout_width="25dp"
+	      android:layout_height="25dp"
+	      android:background="@drawable/custom"
+	      android:layout_centerVertical="true"
+	      android:layout_margin="5dp"
+	      android:layout_toLeftOf="@+id/btnDoneNot"/>
+</RelativeLayout>

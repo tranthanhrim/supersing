@@ -1,0 +1,66 @@
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/relt"
+    android:layout_width="match_parent"
+    android:layout_height="fill_parent"
+    tools:context=".MainActivity" >
+
+    <TextView
+        android:id="@+id/txtclock"
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:gravity="center"
+        android:text="00:00.0"
+        android:textSize="40dp" />
+
+    <ImageView
+        android:id="@+id/imv_speaker"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_below="@id/imv_speaker"
+        android:layout_marginBottom="100dp"
+        android:paddingTop="80dp"
+        android:src="@drawable/speaker_animation" />
+    
+    <SeekBar
+        android:id="@+id/seekbar_playfile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        />
+
+    <LinearLayout
+        android:id="@+id/groupbutton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="20dp"
+        android:gravity="center"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/bt_stop"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:background="@drawable/ic_stop2" 
+            android:onClick="onclick_stop"/>
+        <Button
+            android:id="@+id/bt_play"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:background="@drawable/play1" 
+            android:onClick="onclick_play"/>
+        <Button
+            android:id="@+id/bt_pre"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_gravity="center"
+            android:background="@drawable/previous" 
+            android:onClick="onclick_pre"/>
+
+    </LinearLayout>
+
+</RelativeLayout> 

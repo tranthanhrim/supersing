@@ -5,11 +5,15 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import notactivity.GifView;
+import notactivity.PhoneCallReceiver;
 import notactivity.Record;
+import notactivity.RecordNotificationReceiver;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
+import android.content.BroadcastReceiver;
 import android.content.DialogInterface;
+import android.content.IntentFilter;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -37,6 +41,8 @@ public class RecordFragment extends Fragment {
    	public static Record record = new Record();
    	GifView gif;
 	
+   	BroadcastReceiver receiver;
+   	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		//LinearLayout record_layout = (LinearLayout)inflater.inflate(R.layout.activity_record_fragment, null);
@@ -59,12 +65,22 @@ public class RecordFragment extends Fragment {
         chrWatch=(Chronometer)record_layout.findViewById(R.id.chrWatch);
               
         record.chrWatch = chrWatch;
+        record.gif = gif;
+        record.btnRecord = btnRecord;
+        record.btnDone = btnDone;
+        record.btnCancel = btnCancel;
+        
         btnDone.setVisibility(View.INVISIBLE);
         btnCancel.setVisibility(View.INVISIBLE);
         
-        if (Record.isRecording){
-        	if (Record.isPause){
-        		chrWatch.setBase(SystemClock.elapsedRealtime() + Record.timeWhenStopped);
+//        IntentFilter mainFilter = new IntentFilter("matos.action.RECORD_NOTIFY");
+//        receiver = new RecordNotificationReceiver();
+//        getActivity().registerReceiver(receiver, mainFilter);
+
+         
+        /*if (record.isRecording){
+        	if (record.isPause){
+        		chrWatch.setBase(SystemClock.elapsedRealtime() + record.timeWhenStopped);
         		btnDone.setVisibility(View.VISIBLE);
     	        btnCancel.setVisibility(View.VISIBLE);
         	}
@@ -76,19 +92,15 @@ public class RecordFragment extends Fragment {
         		//chrWatch.setBase(SystemClock.elapsedRealtime() + Record.timeWhenStopped + currentTime);
         		//gif.start();
         	}
-        }
+        }*/
         
         btnRecord.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {         
-         	   btnRecord.setSelected(!btnRecord.isSelected());
+            public void onClick(View v) {
+         	  btnRecord.setSelected(!btnRecord.isSelected());
          	  
          	  if(btnRecord.isSelected())
          	  {
- 	    		  btnCancel.setVisibility(View.INVISIBLE);
- 	    		  btnDone.setVisibility(View.INVISIBLE);
- 	    		  gif.start();
- 	    		  
  	    		  try {
  	    			  record.startRecord();
  	    		  }
@@ -102,12 +114,7 @@ public class RecordFragment extends Fragment {
          	  else
          	  {     		  	  
  	    		  record.pauseRecord();
- 	    		  btnCancel.setVisibility(View.VISIBLE);
-	    		  btnDone.setVisibility(View.VISIBLE);
-	    		  gif.stop();
          	  }
-         	  
-         	  
             }
          });
          
@@ -116,8 +123,6 @@ public class RecordFragment extends Fragment {
             public void onClick(View v) {
             	try {
 	         	  	record.finishRecord();
-	         	  	btnCancel.setVisibility(View.INVISIBLE);
-	         	  	btnDone.setVisibility(View.INVISIBLE);
             	}
            		catch (IOException e) {
              	  	e.printStackTrace();
@@ -129,7 +134,7 @@ public class RecordFragment extends Fragment {
  			
  			@Override
  			public void onClick(View arg0) {
- 				record.cancelRecord(btnCancel, btnDone);
+ 				record.cancelRecord();
  			}
  		});
          

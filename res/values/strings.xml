@@ -3,10 +3,8 @@
 
     <string name="app_name">SSSSSSS</string>
     <string name="title1">Record</string>
-    <string name="title2">Sing</string>
-    <string name="title3">Change Voice</string>
-    <string name="title4">My Recording</string>
-    <string name="title5">Setting</string>
+    <string name="title2">My Recording</string>
+    <string name="title3">Setting</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="action_example">Example action</string>
@@ -36,5 +34,6 @@
     <string name="title_activity_change_voice_fragment">ChangeVoiceFragment</string>
     <string name="title_activity_setting_fragment">SettingFragment</string>
     <string name="title_activity_notification">Notification</string>
+    <string name="title_activity_navigation_adapter">NavigationAdapter</string>
 
 </resources>

@@ -1,6 +1,11 @@
 package com.example.sssssss;
 
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
+import notactivity.ItemNavigation;
+
 import android.app.Activity;
 import android.app.ActionBar;
 import android.app.Fragment;
@@ -57,6 +62,11 @@ public class NavigationDrawerFragment extends Fragment {
     private int mCurrentSelectedPosition = 0;
     private boolean mFromSavedInstanceState;
     private boolean mUserLearnedDrawer;
+    
+    ArrayList<ItemNavigation> listItem = new ArrayList<ItemNavigation>(
+    		Arrays.asList(	new ItemNavigation(R.drawable.ic_launcher, "Record"),
+    						new ItemNavigation(R.drawable.ic_launcher, "MyRecording"),
+							new ItemNavigation(R.drawable.ic_launcher, "Setting")));
 
     public NavigationDrawerFragment() {
     }
@@ -97,7 +107,7 @@ public class NavigationDrawerFragment extends Fragment {
                 selectItem(position);
             }
         });
-        mDrawerListView.setAdapter(new ArrayAdapter<String>(
+        /*mDrawerListView.setAdapter(new ArrayAdapter<String>(
                 getActionBar().getThemedContext(),
                 android.R.layout.simple_list_item_activated_1,
                 android.R.id.text1,
@@ -105,9 +115,10 @@ public class NavigationDrawerFragment extends Fragment {
                         getString(R.string.title1),
                         getString(R.string.title2),
                         getString(R.string.title3),
-                        getString(R.string.title4),
-                        getString(R.string.title5),
-                }));
+                }));*/
+        NavigationAdapter adapter = new NavigationAdapter(this.getActivity(),
+        		R.layout.activity_navigation_adapter, listItem);
+        mDrawerListView.setAdapter(adapter);
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
         return mDrawerListView;
     }
@@ -139,7 +150,7 @@ public class NavigationDrawerFragment extends Fragment {
         mDrawerToggle = new ActionBarDrawerToggle(
                 getActivity(),                    /* host Activity */
                 mDrawerLayout,                    /* DrawerLayout object */
-                R.drawable.ic_drawer,             /* nav drawer image to replace 'Up' caret */
+                R.drawable.ic_menu,             /* nav drawer image to replace 'Up' caret */
                 R.string.navigation_drawer_open,  /* "open drawer" description for accessibility */
                 R.string.navigation_drawer_close  /* "close drawer" description for accessibility */
         ) {

@@ -6,18 +6,35 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.RemoteViews;
 import android.widget.TextView;
 
 public class Notification extends Activity {
 
 	public static TextView txtState;
+	Button btnRecord, btnDone, btnCancel;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_notification);
 		txtState = (TextView)findViewById(R.id.txtState);
+		btnRecord = (Button)findViewById(R.id.btnRecord);
+		btnDone = (Button)findViewById(R.id.btnDone);
+		btnCancel = (Button)findViewById(R.id.btnCancel);
+		
+		btnDone.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent actionDone = new Intent("RECORD_NOTIFY");
+				String msg = "DONE";
+				actionDone.putExtra("recordNotify", msg);
+				sendBroadcast(actionDone);
+			}
+		});
 	}
 
 	@Override

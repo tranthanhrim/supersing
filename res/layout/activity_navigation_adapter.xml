@@ -1,0 +1,22 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:context="com.example.sssssss.NavigationAdapter" >
+
+    <ImageView
+		 android:id="@+id/icon"
+		 android:layout_width="40dp"
+		 android:layout_height="40dp"
+		 android:src="@drawable/ic_launcher"/>
+    <TextView
+		 android:id="@+id/label"
+		 android:layout_width="match_parent"
+		 android:layout_height="20dp"
+		 android:layout_toRightOf="@+id/icon"
+		 android:layout_marginLeft="20dp"
+		 android:text="label"
+		 android:layout_centerVertical="true"
+		 android:textSize="15sp" />
+
+</RelativeLayout>

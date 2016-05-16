@@ -53,7 +53,7 @@ public class MainActivity extends Activity implements NavigationDrawerFragment.N
     
     @Override
 	protected void onUserLeaveHint() {
-    	if(Record.isRecording){
+    	if(RecordFragment.record.isRecording){
     		//makeNotification();
     	}
 		super.onUserLeaveHint();
@@ -63,7 +63,7 @@ public class MainActivity extends Activity implements NavigationDrawerFragment.N
 
 	@Override
 	public void onBackPressed() {
-		if(Record.isRecording){
+		if(RecordFragment.record.isRecording){
 			//makeNotification();
 			moveTaskToBack(true);
 		}
@@ -91,18 +91,10 @@ public class MainActivity extends Activity implements NavigationDrawerFragment.N
                 break;
             case 2:
                 mTitle = getString(R.string.title2);
-            	fragment = new SingFragment();
-                break;
-            case 3:
-                mTitle = getString(R.string.title3);
-                fragment = new ChangeVoiceFragment();
-                break;
-            case 4:
-                mTitle = getString(R.string.title4);
             	fragment = new MyRecordingFragment();
             	break;
-            case 5:
-                mTitle = getString(R.string.title5);
+            case 3:
+                mTitle = getString(R.string.title3);
             	fragment = new SettingFragment();
             	break;
         }

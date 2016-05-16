@@ -15,6 +15,7 @@ import android.app.Notification;
 import android.app.Notification.Builder;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.MediaRecorder;
@@ -33,12 +34,14 @@ import android.widget.Toast;
 public class Record {
 	public Fragment context;
 	public Chronometer chrWatch;
+	public GifView gif;
+	public Button btnDone, btnCancel, btnRecord;
 	
 	private MediaRecorder recorder;
    	private String outputFile = null;  	   	
-   	public static long timeWhenStopped = 0;
-   	public static boolean isRecording = false;
-   	public static boolean isPause = false;
+   	public long timeWhenStopped = 0;
+   	public boolean isRecording = false;
+   	public boolean isPause = false;
    	
    	private ArrayList<String> listFile;
    	NotificationManager manager;
@@ -79,6 +82,9 @@ public class Record {
 		continueWatch();
 		isPause = false;
 		makeNotification();
+		gif.start();
+		btnCancel.setVisibility(View.INVISIBLE);
+		btnDone.setVisibility(View.INVISIBLE);
     }
     
     public void finishRecord() throws IOException{
@@ -95,9 +101,12 @@ public class Record {
         	}
     	}
     	clearNotification();
+    	btnCancel.setVisibility(View.INVISIBLE);
+ 	  	btnDone.setVisibility(View.INVISIBLE);
+ 	  	Toast.makeText(context.getActivity(), "Finished!",Toast.LENGTH_SHORT).show();
     }
     
-    public void cancelRecord(final Button cancel,final Button done){
+    public void cancelRecord(){
     	AlertDialog.Builder builder = new AlertDialog.Builder(context.getActivity());
 
         //builder.setTitle("Confirm");
@@ -113,11 +122,10 @@ public class Record {
             	}
             	resetWatch();
             	isRecording = false;
-            	cancel.setVisibility(View.INVISIBLE);
-            	done.setVisibility(View.INVISIBLE);
             	clearNotification();
-            	
-            	//Toast.makeText(context, "Canceled!",Toast.LENGTH_LONG).show();
+            	btnCancel.setVisibility(View.INVISIBLE);
+         	  	btnDone.setVisibility(View.INVISIBLE);
+            	Toast.makeText(context.getActivity(), "Canceled!",Toast.LENGTH_SHORT).show();
             	
             	//MainActivity.this.finish();
             }
@@ -141,6 +149,10 @@ public class Record {
     	pauseWatch();
     	isPause = true;
     	makeNotification();
+    	gif.stop();
+    	btnCancel.setVisibility(View.VISIBLE);
+    	btnDone.setVisibility(View.VISIBLE);
+    	btnRecord.setSelected(false);
     }
     
     public void pressBackButton(){
@@ -173,6 +185,7 @@ public class Record {
     	timeWhenStopped = chrWatch.getBase() - SystemClock.elapsedRealtime();
     }
     
+    
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN) private void makeNotification(){
     	manager = (NotificationManager)context.getActivity().getSystemService(context.getActivity().NOTIFICATION_SERVICE);
 		Intent intent = new Intent(context.getActivity(), MainActivity.class);
@@ -180,7 +193,43 @@ public class Record {
         PendingIntent pendingIntent = PendingIntent.getActivity(context.getActivity(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 		Notification.Builder builder = new Notification.Builder(context.getActivity());
 
-		RemoteViews contentView = new RemoteViews(context.getActivity().getPackageName(), R.layout.activity_notification);
+		RemoteViews contentView = new RemoteViews(context.getActivity().getPackageName(), R.layout.custom_notification);
+		setListeners(contentView);
+//		Intent switchIntent = new Intent("RECORD_NOTIFY");
+//		switchIntent.putExtra("recordNotify", "DONE");
+//	    PendingIntent pendingSwitchIntent = PendingIntent.getBroadcast(context.getActivity(), 0, switchIntent, 0);
+//	    contentView.setOnClickPendingIntent(R.id.btnDoneNot, pendingSwitchIntent);
+		
+        builder.setAutoCancel(false);
+        if (isPause){
+        	//builder.setContentTitle("is Pause");
+        	//com.example.sssssss.Notification.txtState.setText("is Pause");
+        }
+        else{
+        	//com.example.sssssss.Notification.txtState.setText("is Recording");
+        }
+        //builder.setContentText("You have a new message");
+        builder.setSmallIcon(R.drawable.ic_launcher);
+        builder.setContentIntent(pendingIntent);
+        builder.setOngoing(true);
+        //builder.setSubText("This is subtext...");   //API level 16
+        builder.setNumber(100);
+        //builder.setAutoCancel(true);
+        //builder.build();
+
+        myNotication = builder.getNotification();
+        myNotication.contentView = contentView;
+        manager.notify(0, myNotication);
+    }
+    
+    /*@TargetApi(Build.VERSION_CODES.JELLY_BEAN) private void makeNotification(){
+    	manager = (NotificationManager)context.getActivity().getSystemService(context.getActivity().NOTIFICATION_SERVICE);
+		Intent intent = new Intent(context.getActivity(), MainActivity.class);
+		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context.getActivity(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+		Notification.Builder builder = new Notification.Builder(context.getActivity());
+
+		RemoteViews contentView = new RemoteViews(context.getActivity().getPackageName(), R.layout.custom_notification);
 		//setListeners(contentView);
 		
         builder.setAutoCancel(false);
@@ -203,7 +252,7 @@ public class Record {
         myNotication = builder.getNotification();
         myNotication.contentView = contentView;
         manager.notify(0, myNotication);
-    }
+    }*/
     
     private void clearNotification(){
     	String ns = context.getActivity().NOTIFICATION_SERVICE;
@@ -212,11 +261,14 @@ public class Record {
     }
     
     public void setListeners(RemoteViews view){
-        //listener 1
-        Intent record = new Intent(context.getActivity(),MainActivity.class);
-        record.putExtra("DO", "record");
-        PendingIntent btn1 = PendingIntent.getActivity(context.getActivity(), 0, record, 0);
-        view.setOnClickPendingIntent(R.id.btnRecordNot, btn1);
+    	Intent intentDone = new Intent("RECORD_NOTIFY");
+    	intentDone.putExtra("recordNotify", "DONE");
+	    PendingIntent pendingIntentDone = PendingIntent.getBroadcast(context.getActivity(), 0, intentDone, 0);
+	    view.setOnClickPendingIntent(R.id.btnDoneNot, pendingIntentDone);
+	    
+	    Intent intentCancel = new Intent("RECORD_NOTIFY");
+	    intentCancel.putExtra("recordNotify", "CANCEL");
+	    PendingIntent pendingIntentCancel = PendingIntent.getBroadcast(context.getActivity(), 1, intentCancel, 0);
+	    view.setOnClickPendingIntent(R.id.btnCancelNot, pendingIntentCancel);
     }
-
 }

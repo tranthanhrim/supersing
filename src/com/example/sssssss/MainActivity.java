@@ -73,6 +73,16 @@ public class MainActivity extends Activity implements NavigationDrawerFragment.N
 		
 	}
 
+	
+	
+	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		menu.findItem(R.id.action_settings).setVisible(false);
+		return super.onPrepareOptionsMenu(menu);
+	}
+
+
+
 	@Override
     public void onNavigationDrawerItemSelected(int position) {
         // update the main content by replacing fragments

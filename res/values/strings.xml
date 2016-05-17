@@ -35,5 +35,6 @@
     <string name="title_activity_setting_fragment">SettingFragment</string>
     <string name="title_activity_notification">Notification</string>
     <string name="title_activity_navigation_adapter">NavigationAdapter</string>
+    <string name="title_activity_custom_notification">CustomNotification</string>
 
 </resources>

@@ -25,6 +25,7 @@
             android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -48,10 +49,6 @@
             android:name=".SettingFragment"
             android:label="@string/title_activity_setting_fragment" >
         </activity>
-        <activity
-            android:name=".Notification"
-            android:label="@string/title_activity_notification" >
-        </activity>
 
         <service android:name="myrecording.MyService" >
         </service>
@@ -68,7 +65,7 @@
                 <action android:name="android.intent.action.PHONE_STATE" />
             </intent-filter>
         </receiver>
-        <receiver android:name="notactivity.RecordNotificationReceiver">
+        <receiver android:name="notactivity.RecordNotificationReceiver" >
             <intent-filter>
                 <action android:name="RECORD_NOTIFY" />
             </intent-filter>
@@ -77,6 +74,10 @@
         <activity
             android:name=".NavigationAdapter"
             android:label="@string/title_activity_navigation_adapter" >
+        </activity>
+        <activity
+            android:name=".CustomNotification"
+            android:label="@string/title_activity_custom_notification" >
         </activity>
     </application>
 

@@ -2,13 +2,17 @@ package notactivity;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URL;
 import java.util.ArrayList;
 
 import com.example.sssssss.MainActivity;
+import com.example.sssssss.NavigationDrawerFragment;
 import com.example.sssssss.R;
 
 import android.R.bool;
 import android.annotation.TargetApi;
+import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.Notification;
@@ -19,6 +23,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.MediaRecorder;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -36,6 +41,8 @@ public class Record {
 	public Chronometer chrWatch;
 	public GifView gif;
 	public Button btnDone, btnCancel, btnRecord;
+	
+	public static Button btnRecordNot;
 	
 	private MediaRecorder recorder;
    	private String outputFile = null;  	   	
@@ -72,6 +79,7 @@ public class Record {
         	listFile = new ArrayList<String>();
         	listFile.add(outputFile);
         	isRecording = true;
+        	isHideDrawerToggle(true);
         }
         else{
         	listFile.add(outputFile);
@@ -85,6 +93,7 @@ public class Record {
 		gif.start();
 		btnCancel.setVisibility(View.INVISIBLE);
 		btnDone.setVisibility(View.INVISIBLE);
+		btnRecord.setSelected(true);
     }
     
     public void finishRecord() throws IOException{
@@ -103,6 +112,7 @@ public class Record {
     	clearNotification();
     	btnCancel.setVisibility(View.INVISIBLE);
  	  	btnDone.setVisibility(View.INVISIBLE);
+ 	  	isHideDrawerToggle(false);
  	  	Toast.makeText(context.getActivity(), "Finished!",Toast.LENGTH_SHORT).show();
     }
     
@@ -125,6 +135,7 @@ public class Record {
             	clearNotification();
             	btnCancel.setVisibility(View.INVISIBLE);
          	  	btnDone.setVisibility(View.INVISIBLE);
+         	  	isHideDrawerToggle(false);
             	Toast.makeText(context.getActivity(), "Canceled!",Toast.LENGTH_SHORT).show();
             	
             	//MainActivity.this.finish();
@@ -193,6 +204,9 @@ public class Record {
         PendingIntent pendingIntent = PendingIntent.getActivity(context.getActivity(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 		Notification.Builder builder = new Notification.Builder(context.getActivity());
 
+		Button btnRecordNot = (Button)context.getActivity().findViewById(R.id.btnRecordNot);
+    	//btnRecordNot.setSelected(true);
+		
 		RemoteViews contentView = new RemoteViews(context.getActivity().getPackageName(), R.layout.custom_notification);
 		setListeners(contentView);
 //		Intent switchIntent = new Intent("RECORD_NOTIFY");
@@ -215,7 +229,7 @@ public class Record {
         //builder.setSubText("This is subtext...");   //API level 16
         builder.setNumber(100);
         //builder.setAutoCancel(true);
-        //builder.build();
+        builder.build();
 
         myNotication = builder.getNotification();
         myNotication.contentView = contentView;
@@ -260,15 +274,52 @@ public class Record {
         nMgr.cancel(0);
     }
     
-    public void setListeners(RemoteViews view){
+    private void setListeners(RemoteViews view){
+
+    	//btnRecordNot.setSelected(true);
+    	
+    	Intent intentRecord = new Intent("RECORD_NOTIFY");
+    	intentRecord.putExtra("recordNotify", "RECORD");
+	    PendingIntent pendingIntentRecord = PendingIntent.getBroadcast(context.getActivity(), 0, intentRecord, 0);
+	    view.setOnClickPendingIntent(R.id.btnRecordNot, pendingIntentRecord);
+	    if(isPause){
+	    	view.setTextViewText(R.id.txtState, "Pause");
+	    }
+	    else{
+	    	view.setTextViewText(R.id.txtState, "Recording...");
+	    }
+	    
+    	
     	Intent intentDone = new Intent("RECORD_NOTIFY");
     	intentDone.putExtra("recordNotify", "DONE");
-	    PendingIntent pendingIntentDone = PendingIntent.getBroadcast(context.getActivity(), 0, intentDone, 0);
+	    PendingIntent pendingIntentDone = PendingIntent.getBroadcast(context.getActivity(), 1, intentDone, 0);
 	    view.setOnClickPendingIntent(R.id.btnDoneNot, pendingIntentDone);
 	    
+//	    Uri myUri = Uri.parse("http://www.google.com");
+//	    Intent intentCancel = new Intent("RECORD_NOTIFY", myUri,context.getActivity(), MainActivity.class);
+//	    intentCancel.putExtra("recordNotify", "CANCEL");
+//	    intentCancel.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+//        PendingIntent pendingIntentCancel = PendingIntent.getActivity(context.getActivity(), 2, intentCancel, PendingIntent.FLAG_UPDATE_CURRENT);
+		
 	    Intent intentCancel = new Intent("RECORD_NOTIFY");
+	    //Intent intentCancel = new Intent("RECORD_NOTIFY",myUri, context.getActivity(), MainActivity.class);
 	    intentCancel.putExtra("recordNotify", "CANCEL");
-	    PendingIntent pendingIntentCancel = PendingIntent.getBroadcast(context.getActivity(), 1, intentCancel, 0);
+	    PendingIntent pendingIntentCancel = PendingIntent.getBroadcast(context.getActivity(), 2, intentCancel, 0);
 	    view.setOnClickPendingIntent(R.id.btnCancelNot, pendingIntentCancel);
+	    
+	    
     }
+    
+    private void isHideDrawerToggle(boolean isHide){
+    	ActionBar actionBar = context.getActivity().getActionBar();
+    	if (isHide){
+    		actionBar.setDisplayHomeAsUpEnabled(false);
+            actionBar.setHomeButtonEnabled(false);
+    	}
+    	else{
+    		actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setHomeButtonEnabled(true);
+    	}
+        
+    } 
 }

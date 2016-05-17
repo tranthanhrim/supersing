@@ -10,6 +10,8 @@
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <!-- <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS"/> -->
 
     <application
         android:allowBackup="true"
@@ -47,18 +49,36 @@
             android:name=".SettingFragment"
             android:label="@string/title_activity_setting_fragment" >
         </activity>
-        <activity
-            android:name=".Notification"
-            android:label="@string/title_activity_notification" >
-        </activity>
-        <service android:name="myrecording.MyService"></service>
-        <receiver android:name="myrecording.MyBroastCast">
-            <intent-filter >
-                <action android:name="PLAY_ACTION"/>
-                <action android:name="STOP_ACTION"/>
-                <action android:name="PRE_ACTION"/>
+
+        <service android:name="myrecording.MyService" >
+        </service>
+
+        <receiver android:name="myrecording.MyBroastCast" >
+            <intent-filter>
+                <action android:name="PLAY_ACTION" />
+                <action android:name="STOP_ACTION" />
+                <action android:name="PRE_ACTION" />
             </intent-filter>
         </receiver>
+        <receiver android:name="notactivity.PhoneCallReceiver" >
+            <intent-filter>
+                <action android:name="android.intent.action.PHONE_STATE" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name="notactivity.RecordNotificationReceiver" >
+            <intent-filter>
+                <action android:name="RECORD_NOTIFY" />
+            </intent-filter>
+        </receiver>
+
+        <activity
+            android:name=".NavigationAdapter"
+            android:label="@string/title_activity_navigation_adapter" >
+        </activity>
+        <activity
+            android:name=".CustomNotification"
+            android:label="@string/title_activity_custom_notification" >
+        </activity>
     </application>
 
 </manifest>

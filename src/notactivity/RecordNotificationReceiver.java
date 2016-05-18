@@ -47,12 +47,12 @@ public class RecordNotificationReceiver extends BroadcastReceiver{
 			}
 		}
 		if(action.equals("CANCEL")){
-			Intent it = new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS);
-			context.sendBroadcast(it);
+			//Intent it = new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS);
+			//context.sendBroadcast(it);
 			if (RecordFragment.record.isPause == false){
 				RecordFragment.record.pauseRecord();
 			}
-			RecordFragment.record.cancelRecord();
+			RecordFragment.record.cancelRecordWithoutAuthentication();
 		}
 	}
 

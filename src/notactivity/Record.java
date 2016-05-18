@@ -125,23 +125,10 @@ public class Record {
         builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
 
             public void onClick(DialogInterface dialog, int which) {
-            	
-            	for(int i = 0; i < listFile.size(); i++){
-            		File f = new File(listFile.get(i));
-            		f.delete();
-            	}
-            	resetWatch();
-            	isRecording = false;
-            	clearNotification();
-            	btnCancel.setVisibility(View.INVISIBLE);
-         	  	btnDone.setVisibility(View.INVISIBLE);
-         	  	isHideDrawerToggle(false);
-            	Toast.makeText(context.getActivity(), "Canceled!",Toast.LENGTH_SHORT).show();
-            	
+            	cancelRecordWithoutAuthentication();
             	//MainActivity.this.finish();
             }
         });
-
         builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
 
             @Override
@@ -152,6 +139,20 @@ public class Record {
 
         AlertDialog alert = builder.create();
         alert.show();
+    }
+    
+    public void cancelRecordWithoutAuthentication(){
+    	for(int i = 0; i < listFile.size(); i++){
+    		File f = new File(listFile.get(i));
+    		f.delete();
+    	}
+    	resetWatch();
+    	isRecording = false;
+    	clearNotification();
+    	btnCancel.setVisibility(View.INVISIBLE);
+ 	  	btnDone.setVisibility(View.INVISIBLE);
+ 	  	isHideDrawerToggle(false);
+    	Toast.makeText(context.getActivity(), "Canceled!",Toast.LENGTH_SHORT).show();
     }
     
     public void pauseRecord(){
@@ -298,8 +299,8 @@ public class Record {
 //	    Uri myUri = Uri.parse("http://www.google.com");
 //	    Intent intentCancel = new Intent("RECORD_NOTIFY", myUri,context.getActivity(), MainActivity.class);
 //	    intentCancel.putExtra("recordNotify", "CANCEL");
-//	    intentCancel.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-//        PendingIntent pendingIntentCancel = PendingIntent.getActivity(context.getActivity(), 2, intentCancel, PendingIntent.FLAG_UPDATE_CURRENT);
+//	    //intentCancel.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+//        PendingIntent pendingIntentCancel = PendingIntent.getActivity(context.getActivity(), 2, intentCancel, 0);
 		
 	    Intent intentCancel = new Intent("RECORD_NOTIFY");
 	    //Intent intentCancel = new Intent("RECORD_NOTIFY",myUri, context.getActivity(), MainActivity.class);
@@ -320,6 +321,5 @@ public class Record {
     		actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeButtonEnabled(true);
     	}
-        
-    } 
+    }
 }

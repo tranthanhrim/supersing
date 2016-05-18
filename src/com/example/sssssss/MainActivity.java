@@ -26,12 +26,13 @@ import android.support.v4.widget.DrawerLayout;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
+import myrecording.MyService;
 
 
 public class MainActivity extends Activity implements NavigationDrawerFragment.NavigationDrawerCallbacks {
     private NavigationDrawerFragment mNavigationDrawerFragment;
     private CharSequence mTitle;
-   
+   MyRecordingFragment myrecording  = new MyRecordingFragment();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,6 +64,7 @@ public class MainActivity extends Activity implements NavigationDrawerFragment.N
 
 	@Override
 	public void onBackPressed() {
+		myrecording.clearNotification();
 		if(RecordFragment.record.isRecording){
 			//makeNotification();
 			moveTaskToBack(true);
@@ -73,7 +75,6 @@ public class MainActivity extends Activity implements NavigationDrawerFragment.N
 		
 	}
 
-	
 	
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
@@ -102,6 +103,7 @@ public class MainActivity extends Activity implements NavigationDrawerFragment.N
             case 2:
                 mTitle = getString(R.string.title2);
             	fragment = new MyRecordingFragment();
+            	myrecording = (MyRecordingFragment)fragment;
             	break;
             case 3:
                 mTitle = getString(R.string.title3);

@@ -22,17 +22,16 @@ import notactivity.AudioFile;
 
 public class myLib {
 
-	private static File[] getListFile(String path) {
-		File file = new File(path);
-		File[] f = file.listFiles();
-		return f;
-	}
+
 
 	public static ArrayList<AudioFile> getInfo(String pathfolder, Context context) {
+		ArrayList<AudioFile> list = new ArrayList<AudioFile>();
 		try {
-			ArrayList<AudioFile> list = new ArrayList<AudioFile>();
-
-			File[] listfile = myLib.getListFile(pathfolder);
+			File file = new File(pathfolder);
+			File[] listfile = file.listFiles();
+			if(listfile.length == 0)
+				return list;
+			
 			int n = listfile.length;
 			for (int i = 0; i < n; i++) {
 				if (listfile[i].isFile()) {
@@ -54,7 +53,7 @@ public class myLib {
 
 						MediaPlayer mp = MediaPlayer.create(context, Uri.parse(f.getAbsolutePath()));
 						int duration = mp.getDuration();
-						SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+						SimpleDateFormat sdf = new SimpleDateFormat("mm:ss");
 						a.setLenght(sdf.format(duration));
 						a.set_src(f.getAbsolutePath());
 						list.add(a);
@@ -62,10 +61,10 @@ public class myLib {
 				}
 			}
 
-			return list;
 		} catch (Exception e) {
-			return null;
+			
 		}
+		return list;
 	}
 
 	public static String formatTime(File f) {

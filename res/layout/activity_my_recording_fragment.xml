@@ -1,42 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/background"
-    android:orientation="vertical" >
+    android:layout_height="fill_parent"
+    android:background="@drawable/background" >
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#F2F2F2"
-        android:orientation="horizontal" >
+        android:layout_height="match_parent"
+        android:layout_above="@+id/seekbar_playfile" >
 
-        <ImageButton
-            android:id="@+id/imbt_listfile_myrecording"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@null"
-            android:padding="5dp"
-            android:src="@drawable/icon_listfile" />
-
-        <ImageButton
-            android:id="@+id/imbt_playfile_myrecording"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@null"
-            android:padding="5dp"
-            android:src="@drawable/icon_playfile" />
-
+        <ListView
+            android:id="@+id/listView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
     </LinearLayout>
 
-    <FrameLayout
-        android:id="@+id/content_frag_myrecording"
+    <SeekBar
+        android:id="@+id/seekbar_playfile"
         android:layout_width="match_parent"
-        android:layout_height="10dp"
-        android:layout_weight="1" >
-    </FrameLayout>
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/groupbutton"/>
 
-</LinearLayout>
+    <LinearLayout
+        android:id="@+id/groupbutton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="5dp"
+        android:gravity="center"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/bt_stop"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/ic_mr_stop"
+            android:onClick="onclick_stop" />
+
+        <Button
+            android:id="@+id/bt_play"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            android:background="@drawable/ic_mr_play1"
+            android:onClick="onclick_play" />
+
+        <Button
+            android:id="@+id/bt_pre"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:background="@drawable/ic_mr_previous"
+            android:onClick="onclick_pre" />
+    </LinearLayout>
+
+</RelativeLayout>

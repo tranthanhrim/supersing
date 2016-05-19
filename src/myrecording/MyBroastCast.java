@@ -4,6 +4,7 @@ import com.example.sssssss.MyRecordingFragment;
 import com.example.sssssss.R;
 
 import android.app.Notification;
+import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -22,7 +23,6 @@ public class MyBroastCast extends BroadcastReceiver {
 				_parent.setStatePlayButton(0);
 			}
 			else{
-			
 				_parent.getMyservice().playmedia();
 				_parent.show(_parent.getfilename(), 1);
 				_parent.setStatePlayButton(1);

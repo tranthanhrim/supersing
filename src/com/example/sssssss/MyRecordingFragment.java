@@ -50,6 +50,7 @@ import myrecording.myLib;
 import myrecording.MyService.MyBinder;
 import notactivity.AudioFile;
 import notactivity.CustomAdapter;
+import notactivity.Record;
 
 public class MyRecordingFragment extends Fragment implements OnClickListener {
 
@@ -193,6 +194,7 @@ public class MyRecordingFragment extends Fragment implements OnClickListener {
 					seekbar.setProgress(currPos);
 					if(myservice.isPlaying())
 					bt_play.setBackgroundResource(R.drawable.ic_mr_play2);
+
 				}
 			}
 		};
@@ -203,6 +205,9 @@ public class MyRecordingFragment extends Fragment implements OnClickListener {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				_pathfile = _listfile.get(position).get_src();
+				refreshListfile();
+				_listfile.get(position).set_isselected(true);
+				updatelistview(_listfile);
 				play();
 			}
 
@@ -265,8 +270,15 @@ public class MyRecordingFragment extends Fragment implements OnClickListener {
 			public void onClick(View v) {
 				String path = _listfile.get(index_selected).get_src();
 				File f = new File(path);
-				if (f.delete())
+				if (f.delete()){
+					if(myservice.get_pathfile().equals(path)){
+						myservice.updateSourse("");
+						bt_play.setBackgroundResource(R.drawable.ic_mr_play1);
+						seekbar.setProgress(0);
+						show("", 0);
+					}
 					showToast("Successfully!");
+				}
 				else
 					showToast("Error!");
 				readfile();
@@ -554,5 +566,15 @@ public class MyRecordingFragment extends Fragment implements OnClickListener {
 		if(state == 0)
 		bt_play.setBackgroundResource(R.drawable.ic_mr_play1);else
 			bt_play.setBackgroundResource(R.drawable.ic_mr_play2);
+	}
+	private void refreshListfile(){
+		int n = _listfile.size();
+		for(int i = 0; i < n; i++){
+			_listfile.get(i).set_isselected(false);
+		}
+	}
+	
+	public void prepareToRecord(){
+		play();
 	}
 }

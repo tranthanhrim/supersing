@@ -21,7 +21,7 @@ import android.widget.Toast;
 public class MyService extends Service {
 	public static MyRecordingFragment _parent = new MyRecordingFragment();
 	
-	private MyMedia myPlayer;
+	static private MyMedia myPlayer;
 	private IBinder binder;
 	
 	@Override
@@ -60,7 +60,7 @@ public class MyService extends Service {
 		}
 	}
 
-	public String get_pathfile() {
+	public static String get_pathfile() {
 		if(myPlayer != null)
 		return myPlayer.get_pathfile();
 		else

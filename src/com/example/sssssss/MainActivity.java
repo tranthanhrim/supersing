@@ -54,13 +54,14 @@ public class MainActivity extends Activity implements NavigationDrawerFragment.N
 	protected void onUserLeaveHint() {
 		if (RecordFragment.record.isRecording) {
 			// makeNotification();
+			
 		}
 		super.onUserLeaveHint();
 	}
 
 	@Override
 	public void onBackPressed() {
-		if (RecordFragment.record.isRecording) {
+		if (RecordFragment.record.isRecording || !MyService.get_pathfile().equals("")) {
 			// makeNotification();
 			moveTaskToBack(true);
 		} else {
@@ -177,6 +178,9 @@ public class MainActivity extends Activity implements NavigationDrawerFragment.N
 			((MainActivity) activity).onSectionAttached(getArguments().getInt(ARG_SECTION_NUMBER));
 		}
 
+	}
+	public MyRecordingFragment getMyrecordFragment(){
+		return myrecording;
 	}
 
 }

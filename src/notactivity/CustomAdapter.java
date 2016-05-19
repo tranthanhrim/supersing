@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class CustomAdapter extends ArrayAdapter<AudioFile>{
@@ -41,7 +42,10 @@ public class CustomAdapter extends ArrayAdapter<AudioFile>{
 			TextView time_record = (TextView)convertView.findViewById(R.id.time_record);
 			TextView size = (TextView)convertView.findViewById(R.id.size);
 			TextView lenght = (TextView)convertView.findViewById(R.id.lenght);
-			
+			if(item.get_isselected()){
+				ImageView im = (ImageView)convertView.findViewById(R.id.imv_selected);
+				im.setImageResource(R.drawable.ic_selected_play);
+			}
 			
 			filename.setText(item.get_filename());
 			date_record.setText(item.get_dateRecord());

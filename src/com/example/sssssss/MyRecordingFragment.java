@@ -68,14 +68,16 @@ public class MyRecordingFragment extends Fragment implements OnClickListener {
 	//// Play file///
 	SeekBar seekbar;
 	static MyService myservice;
-	 ServiceConnection connection;
+	ServiceConnection connection;
 	Intent intent;
-	static String _pathfile = "";
+	static  String _pathfile = "";
 	static boolean isfirstVisited = true;
 	boolean isrunning = false;
 	MyBroastCast mybroastcast;
-	Notification _notification;
-	
+
+	/// show notificaiton///
+	static Notification _notification;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -85,12 +87,9 @@ public class MyRecordingFragment extends Fragment implements OnClickListener {
 		File f = new File(_pathfolder);
 		if (!f.exists())
 			f.mkdir();
-	
 
 	}
 
-
-	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		_relativeLayout = (RelativeLayout) inflater.inflate(R.layout.activity_my_recording_fragment, null);
@@ -105,14 +104,13 @@ public class MyRecordingFragment extends Fragment implements OnClickListener {
 		bt_stop.setOnClickListener(this);
 		bt_pre.setOnClickListener(this);
 
-		//if(myservice!= null)
-		//myservice.resert();
+		// if(myservice!= null)
+		// myservice.resert();
 
-		
 		if (isfirstVisited) {
 			mybroastcast = new MyBroastCast();
 			MyBroastCast._parent = this;
-			if(myservice == null){
+			if (myservice == null) {
 				myservice = new MyService();
 				MyService._parent = this;
 			}
@@ -136,12 +134,13 @@ public class MyRecordingFragment extends Fragment implements OnClickListener {
 			};
 			onService();
 			isfirstVisited = false;
-		}else{
-			if(!myservice.get_pathfile().equals("")){
-			seekbar.setMax(myservice.getDuration());
-			seekbar.setProgress(myservice.getCurr());
-			isrunning = true;
-			thread_updateseekbar();}
+		} else {
+			if (!_pathfile.equals("")) {
+				seekbar.setMax(myservice.getDuration());
+				seekbar.setProgress(myservice.getCurr());
+				isrunning = true;
+				thread_updateseekbar();
+			}
 		}
 		seekbar.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
 			@Override
@@ -192,7 +191,8 @@ public class MyRecordingFragment extends Fragment implements OnClickListener {
 				int currPos = (int) bundle.getLong("currPos");
 				if (currPos > 0) {
 					seekbar.setProgress(currPos);
-					
+					if(myservice.isPlaying())
+					bt_play.setBackgroundResource(R.drawable.ic_mr_play2);
 				}
 			}
 		};
@@ -279,14 +279,10 @@ public class MyRecordingFragment extends Fragment implements OnClickListener {
 				deleteDialog.dismiss();
 			}
 		});
-		
-		
-		
+
 		return _relativeLayout;
 	}
 
-	
-	
 	@Override
 	public void onClick(View v) {
 
@@ -308,16 +304,14 @@ public class MyRecordingFragment extends Fragment implements OnClickListener {
 
 	}
 
-	
-	
 	@Override
 	public void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
 
-		if(myservice!= null && !myservice.get_pathfile().equals("")){
+		if (myservice != null && !_pathfile.equals("")) {
 			bt_play.setBackgroundResource(R.drawable.ic_mr_play1);
-			if(myservice.isPlaying()){
+			if (myservice.isPlaying()) {
 				bt_play.setBackgroundResource(R.drawable.ic_mr_play2);
 			}
 		}
@@ -327,11 +321,7 @@ public class MyRecordingFragment extends Fragment implements OnClickListener {
 	public void onPause() {
 		// TODO Auto-generated method stub
 		super.onPause();
-		if (myservice != null && myservice.isPlaying()){
-			String k = _pathfile;
-			 k = k.substring( k.lastIndexOf("/")+ 1);
-			show(k);
-		}
+
 	}
 
 	public boolean onContextItemSelected(MenuItem item) {
@@ -426,9 +416,16 @@ public class MyRecordingFragment extends Fragment implements OnClickListener {
 		myservice.stopmedia();
 		bt_play.setBackgroundResource(R.drawable.ic_mr_play1);
 		seekbar.setProgress(0);
+		if (myservice != null && !_pathfile.equals("")) {
+			String k1 = _pathfile;
+			k1 = k1.substring(k1.lastIndexOf("/") + 1);
+				show(k1, 0);
+		}
+		
 	}
 
 	private void play() {
+		
 		String k = _pathfile;
 		if (k.equals(""))
 			Toast.makeText(getActivity(), "Let select file to play", Toast.LENGTH_LONG).show();
@@ -455,70 +452,107 @@ public class MyRecordingFragment extends Fragment implements OnClickListener {
 				bt_play.setBackgroundResource(R.drawable.ic_mr_play2);
 			}
 		}
+		
+		if (myservice != null && !_pathfile.equals("")) {
+			String k1 = _pathfile;
+			k1 = k1.substring(k1.lastIndexOf("/") + 1);
+			if (myservice.isPlaying())
+				show(k1, 1);
+			else
+				show(k1, 0);
+		}
 	}
-	public  void clearNotification(){
-    	String ns = getActivity().NOTIFICATION_SERVICE;
-        NotificationManager nMgr = (NotificationManager) getActivity().getSystemService(ns);
-        nMgr.cancel(6495);
-    }
+
+	public void clearNotification(int code) {
+		String ns = getActivity().NOTIFICATION_SERVICE;
+		NotificationManager nMgr = (NotificationManager) getActivity().getSystemService(ns);
+		nMgr.cancel(code);
+	}
+
 	private void pre() {
 		myservice.premedia();
 	}
-	public MyService getMyservice(){
+
+	public MyService getMyservice() {
 		return myservice;
 	}
-	
-	public void show(String filename){
-		
-		NotificationCompat.Builder builder =  new NotificationCompat.Builder(getActivity());
-	        NotificationManager notificationManager =  (NotificationManager) getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
-	        Intent intent = new Intent(getActivity(), getActivity().getClass());
-	        intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-	        PendingIntent pendingIntent = PendingIntent.getActivity(getActivity(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-	        
-	        
-	        RemoteViews contentView = new RemoteViews(getActivity().getPackageName(), R.layout.custom_notification_playfile);
-	        
-	        contentView.setTextViewText(R.id.tv_filename_no, filename);
-	        
-	        Intent stopReceive = new Intent();  
-	        stopReceive.setAction("STOP_ACTION");
-	        PendingIntent pendingIntentStop = PendingIntent.getBroadcast(getActivity(), 12345, stopReceive, PendingIntent.FLAG_UPDATE_CURRENT);
-	        contentView.setOnClickPendingIntent(R.id.bt_stop_no, pendingIntentStop);
-	        
-	        //  builder.addAction(R.drawable.ic_sstop_no, "", pendingIntentStop);
 
-	        Intent playReceive = new Intent();  
-	        playReceive.setAction("PLAY_ACTION");
-	        PendingIntent pendingIntentPlay = PendingIntent.getBroadcast(getActivity(), 12345, playReceive, PendingIntent.FLAG_UPDATE_CURRENT);
-	        contentView.setOnClickPendingIntent(R.id.bt_play_no, pendingIntentPlay);
+	int cout = 0;
 
-	        Intent preReceive = new Intent();  
-	        preReceive.setAction("PRE_ACTION");
-	        PendingIntent pendingIntentPre = PendingIntent.getBroadcast(getActivity(), 12345, preReceive, PendingIntent.FLAG_UPDATE_CURRENT);
-	        contentView.setOnClickPendingIntent(R.id.bt_pre_no, pendingIntentPre);
-	        
-	        builder.setSmallIcon(R.drawable.ic_launcher);
-	     //   builder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.large_love));
-	     //   builder.setContentTitle(filename);
-	     //   builder.setContentText("Welcome to  Base Notification");
-	     //   builder.setSubText("Go to love-activity");
-	        builder.setAutoCancel(true); 
-	        builder.setContentIntent(pendingIntent);
-	      //  builder.build();
-	        _notification = builder.build();
-	       _notification.contentView = contentView;
-	     //   builder.build().contentView = contentView;
-	        notificationManager.notify(6495, _notification);
+
+	public  void show(String filename, int state) {
+
+		NotificationCompat.Builder builder = new NotificationCompat.Builder(getActivity());
+		NotificationManager notificationManager = (NotificationManager) getActivity()
+				.getSystemService(Context.NOTIFICATION_SERVICE);
+		Intent intent = new Intent(getActivity(), getActivity().getClass());
+		intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		PendingIntent pendingIntent = PendingIntent.getActivity(getActivity(), 0, intent,
+				PendingIntent.FLAG_UPDATE_CURRENT);
+
+		RemoteViews contentView;
+		if (state == 0)
+			contentView = new RemoteViews(getActivity().getPackageName(), R.layout.custom_notification_playfile_1);
+		else
+			contentView = new RemoteViews(getActivity().getPackageName(), R.layout.custom_notification_playfile_2);
+
+		contentView.setTextViewText(R.id.tv_filename_no, filename);
+
+		Intent stopReceive = new Intent();
+		stopReceive.setAction("STOP_ACTION");
+		PendingIntent pendingIntentStop = PendingIntent.getBroadcast(getActivity(), 12345, stopReceive,
+				PendingIntent.FLAG_UPDATE_CURRENT);
+		contentView.setOnClickPendingIntent(R.id.bt_stop_no, pendingIntentStop);
+
+		Intent playReceive = new Intent();
+		playReceive.setAction("PLAY_ACTION");
+		PendingIntent pendingIntentPlay = PendingIntent.getBroadcast(getActivity(), 12345, playReceive,
+				PendingIntent.FLAG_UPDATE_CURRENT);
+		// contentView.setImageViewResource(R.id.bt_play_no,
+		// R.drawable.ic_action_ic_myrecord_play2);
+		contentView.setOnClickPendingIntent(R.id.bt_play_no, pendingIntentPlay);
+
+		Intent exitReceive = new Intent();
+		playReceive.setAction("EXIT_ACTION");
+		PendingIntent pendingIntentexit = PendingIntent.getBroadcast(getActivity(), 12345, playReceive,
+				PendingIntent.FLAG_UPDATE_CURRENT);
+		contentView.setOnClickPendingIntent(R.id.bt_exit_no, pendingIntentexit);
+
+		Intent preReceive = new Intent();
+		preReceive.setAction("PRE_ACTION");
+		PendingIntent pendingIntentPre = PendingIntent.getBroadcast(getActivity(), 12345, preReceive,
+				PendingIntent.FLAG_UPDATE_CURRENT);
+		contentView.setOnClickPendingIntent(R.id.bt_pre_no, pendingIntentPre);
+
+		builder.setSmallIcon(R.drawable.ic_launcher);
+		// builder.setAutoCancel(true);
+		builder.setContentIntent(pendingIntent);
+		_notification = builder.build();
+		_notification.contentView = contentView;
+		notificationManager.notify(1, _notification);
+	}
+
+	public void setwhencompete() {
+		seekbar.setProgress(0);
+		bt_play.setBackgroundResource(R.drawable.ic_mr_play1);
+	}
+
+	public Notification getNoti() {
+		return _notification;
+	}
+
+	public String getPathfile() {
+		return _pathfile;
+	}
+	public static String getfilename() {
+		String k = _pathfile;
+		k = k.substring(k.lastIndexOf("/") + 1);
+		return k;
 	}
 	
-	public void setwhencompete(){
-			seekbar.setProgress(0);
-			bt_play.setBackgroundResource(R.drawable.ic_mr_play1);
+	public void setStatePlayButton(int state){
+		if(state == 0)
+		bt_play.setBackgroundResource(R.drawable.ic_mr_play1);else
+			bt_play.setBackgroundResource(R.drawable.ic_mr_play2);
 	}
-	
-	public String getPathfile(){
-		return myservice.get_pathfile();
-	}
-
 }

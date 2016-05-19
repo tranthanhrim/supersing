@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:orientation="horizontal" >
+
+    <ImageView 
+        android:id="@+id/imgIcon"
+        android:layout_height="60dp"
+        android:layout_width="60dp"
+        android:background="@drawable/ic_launcher"
+        android:layout_alignParentTop="true"/>
+		<LinearLayout
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:orientation="vertical" >
+
+			<TextView
+			    android:id="@+id/tv_filename_no"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:layout_gravity="center"
+			    android:text="..."
+			    android:textStyle="bold" />
+
+			<LinearLayout
+			    android:id="@+id/groupbutton"
+			    android:layout_width="match_parent"
+			    android:layout_height="wrap_content"
+			    android:gravity="center"
+			    android:orientation="horizontal" >
+
+			    <Button
+			        android:id="@+id/bt_stop_no"
+			        android:layout_width="40dp"
+			        android:layout_height="40dp"
+			        android:layout_marginRight="30dp"
+			        android:background="@drawable/ic_action_ic_myrecord_stop" />
+
+			    <Button
+			        android:id="@+id/bt_play_no"
+			        android:layout_width="50dp"
+			        android:layout_height="50dp"
+			        android:layout_gravity="center"
+			        android:background="@drawable/ic_action_ic_myrecord_play1"
+			         />
+
+			    <Button
+			        android:id="@+id/bt_pre_no"
+			        android:layout_width="40dp"
+			        android:layout_height="40dp"
+			        android:layout_gravity="center"
+			        android:layout_marginLeft="30dp"
+			        android:background="@drawable/ic_action_ic_myrecord_previous" />
+			     <Button
+			        android:id="@+id/bt_exit_no"
+			        android:layout_width="30dp"
+			        android:layout_height="30dp"
+			        android:layout_gravity="center"
+			        android:layout_marginLeft="20dp"
+			        android:background="@drawable/ic_action_myrecord_x" />
+			</LinearLayout>
+
+		</LinearLayout>
+
+</LinearLayout>

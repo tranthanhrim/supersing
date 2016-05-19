@@ -35,14 +35,15 @@
 			        android:layout_width="40dp"
 			        android:layout_height="40dp"
 			        android:layout_marginRight="30dp"
-			        android:background="@drawable/ic_sstop_no" />
+			        android:background="@drawable/ic_action_ic_myrecord_stop" />
 
 			    <Button
 			        android:id="@+id/bt_play_no"
 			        android:layout_width="50dp"
 			        android:layout_height="50dp"
 			        android:layout_gravity="center"
-			        android:background="@drawable/ic_play_no" />
+			        android:background="@drawable/ic_action_ic_myrecord_play2"
+			         />
 
 			    <Button
 			        android:id="@+id/bt_pre_no"
@@ -50,7 +51,14 @@
 			        android:layout_height="40dp"
 			        android:layout_gravity="center"
 			        android:layout_marginLeft="30dp"
-			        android:background="@drawable/ic_pre_no" />
+			        android:background="@drawable/ic_action_ic_myrecord_previous" />
+			     <Button
+			        android:id="@+id/bt_exit_no"
+			        android:layout_width="30dp"
+			        android:layout_height="30dp"
+			        android:layout_gravity="center"
+			        android:layout_marginLeft="20dp"
+			        android:background="@drawable/ic_action_myrecord_x" />
 			</LinearLayout>
 
 		</LinearLayout>

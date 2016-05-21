@@ -9,14 +9,14 @@ public class AudioFile implements Serializable  {
 	private String _src;
 	private String _size;
 	private String _lenght;
-	
+	private boolean _isselected;
 	
 	public AudioFile(){
 		super();
 	}
 
 
-	public AudioFile(String filename, String dateRecord, String timeRecord, String size, String lenght, String src) {
+	public AudioFile(String filename, String dateRecord, String timeRecord, String size, String lenght, String src, boolean select) {
 		super();
 		this._filename = filename;
 		this._dateRecord = dateRecord;
@@ -24,6 +24,7 @@ public class AudioFile implements Serializable  {
 		this._size = size;
 		this._lenght = lenght;
 		this._src = src;
+		this._isselected = select;
 	}
 	
 	
@@ -66,6 +67,16 @@ public class AudioFile implements Serializable  {
 	}
 	public void setLenght(String lenght) {
 		this._lenght = lenght;
+	}
+
+
+	public boolean get_isselected() {
+		return _isselected;
+	}
+
+
+	public void set_isselected(boolean _isselected) {
+		this._isselected = _isselected;
 	}
 	
 	

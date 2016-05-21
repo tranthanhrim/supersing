@@ -25,7 +25,6 @@
             android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -56,6 +55,7 @@
         <receiver android:name="myrecording.MyBroastCast" >
             <intent-filter>
                 <action android:name="PLAY_ACTION" />
+                 <action android:name="EXIT_ACTION" />
                 <action android:name="STOP_ACTION" />
                 <action android:name="PRE_ACTION" />
             </intent-filter>

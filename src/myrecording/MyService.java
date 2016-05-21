@@ -3,6 +3,8 @@ package myrecording;
 
 import java.io.IOException;
 
+import com.example.sssssss.MyRecordingFragment;
+
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -17,15 +19,16 @@ import android.os.SystemClock;
 import android.widget.Toast;
 
 public class MyService extends Service {
-
-	private MyMedia myPlayer;
+	public static MyRecordingFragment _parent = new MyRecordingFragment();
+	
+	static private MyMedia myPlayer;
 	private IBinder binder;
-
+	
 	@Override
 	public void onCreate() {
-		// Log.d("ServiceDemo", "Đã gọi onCreate()");
 		try {
 			myPlayer = new MyMedia(this);
+			myPlayer.p = this;
 		} catch (IllegalArgumentException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -36,7 +39,7 @@ public class MyService extends Service {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} 
-		binder = new MyBinder(); // do MyBinder được extends Binder
+		binder = new MyBinder();
 		super.onCreate();
 	}
 
@@ -57,13 +60,15 @@ public class MyService extends Service {
 		}
 	}
 
-	public String get_pathfile() {
+	public static String get_pathfile() {
 		if(myPlayer != null)
 		return myPlayer.get_pathfile();
 		else
 			return "";
 	}
-
+	public void resert(){
+		myPlayer.reset();
+	}
 	public void set_pathfile(String _pathfile) {
 		myPlayer.set_pathfile(_pathfile);
 	}
@@ -101,5 +106,6 @@ public class MyService extends Service {
 	public int getDuration(){
 		return myPlayer.getDuration();
 	}
+
 }
 

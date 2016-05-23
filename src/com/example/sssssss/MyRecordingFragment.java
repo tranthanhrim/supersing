@@ -160,7 +160,7 @@ public class MyRecordingFragment extends Fragment implements OnClickListener {
 			@Override
 			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 				// TODO Auto-generated method stub
-				if (myservice.getCurr() != 0)
+				if (fromUser)
 					myservice.seek(progress);
 			}
 		});
